@@ -1,5 +1,13 @@
 # DataHack_2.0_PS-1_WAR_WITH_CODE
-1. Data Collection: 2. Data Cleaning and Preprocessing:3. Data Analysis:4. Dashboard Development:5. Key Metrics and Insights:
+<H1>DATA DRIVEN ANALYSIS OF INDIAN STARTUPS IN ARTIFICAL INTELLIENCE AND DATA SCIENCE</H1>
+<ol>
+<h1>STEPS TO BUILD THE PROJECT</h1>
+<li>1. Data Collection:</li>
+<li>2. Data Cleaning and Preprocessing:</li>
+<li>3. Data Analysis:</li>
+<li>4. Dashboard Development:</li>
+<li>5. Key Metrics and Insights:</li>
+</ol>
 <b>
 To create a website for data analysis for Indian startups in AI and EV with Streamlit:
 
