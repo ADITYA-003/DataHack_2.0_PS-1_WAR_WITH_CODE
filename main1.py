@@ -4,11 +4,12 @@ import streamlit as st  # pip install streamlit
 import numpy as np
 from streamlit_echarts import st_echarts
 import pydeck as pdk
+from bokeh.plotting import figure
 st.set_page_config(page_title="Sales Dashboard", page_icon=":bar_chart:", layout="wide")
 @st.cache_data
 def get_data_from_excel():
     df = pd.read_excel(
-        io="Ai_companies1.xlsx",
+        io="Ai_companies.xlsx",
         engine="openpyxl",
         sheet_name="sheet1",
         # skiprows=3,
@@ -28,7 +29,8 @@ st.markdown(
     """,
     unsafe_allow_html=True,
 )
-
+px.defaults.width = 1000
+px.defaults.height = 500
 def bar_Reliance():
     reliance_data = df[df['Name'] == 'Reliance Industries Ltd.']
     years = [2019, 2020, 2021, 2022, 2023]
@@ -44,24 +46,54 @@ def bar_Reliance():
     # Create a Streamlit bar chart
     st.title("Reliance ")
     st.bar_chart(df2, use_container_width=True)
-#     # Filter the data for "Reliance Industries Ltd."
 
+css = '''
+<style>
+    [data-testid="stSidebar"]{
+        min-width: 100px;
+        max-width: 400px;
+    }
+</style>
+'''
+st.markdown(css, unsafe_allow_html=True)
+css = '''
+<style>
+    [data-testid="sttabs"]{
+        max-width: 800px;
+    }
+</style>
+'''
+st.markdown(css, unsafe_allow_html=True)
+#     # Filter the data for "Reliance Industries Ltd."
+def covid():
+    x = [1, 2, 3, 4, 5]
+    y = [6, 7, 2, 4, 5]
+    p = figure(
+    title='simple line example',
+    x_axis_label='x',
+    y_axis_label='y')
+
+    p.line(x, y, legend_label='Trend', line_width=2)
+
+    st.bokeh_chart(p, use_container_width=True)
 
 # Select the relevant columns for the last five years
     # reliance_data = reliance_data[['Income Year', 'Income of 5 Years']]
 
 # Create a Streamlit bar chart
     # st.bar_chart(reliance_data.set_index('Income Year'))
-
+st.header(' :blue[DASHBOARD] :trophy:',divider="rainbow")
 with st.sidebar.header("Please Filter Here:"):
     location = st.sidebar.multiselect(
         "Select the Location:",
         options=df["Location"].unique(),
         default=df["Location"].unique()
     )
-    st.header(' :blue[DASHBOARD] :trophy:',divider="rainbow")
-    st.button("TOP_COMAPANY",on_click=bar_Reliance,type="primary")
-    
+    head1,head2 = st.columns(2)
+    with head1:
+        q1 = st.button("TOP_COMPANY",on_click=bar_Reliance,type="primary")
+    with head2:
+        q2 = st.button("COVID19",on_click=covid,type="primary")
     # uploaded_file = st.file_uploader("Choose a file")
     # if uploaded_file is not None:
     #     dd = pd.read_csv(uploaded_file)
@@ -88,18 +120,27 @@ with column2:
     st.subheader("Average Income In 2023:")
     st.subheader(average_income_2023)
 # ---- MAINPAGE ----
-st.title(":bar_chart: Sales Dashboard")
+st.title(":bar_chart: INCOME TRENDS")
 st.markdown("##")
 
 
 tab1, tab2, tab3, tab4,tab5  = st.tabs(["2023","2022","2021","2020","2019"])
 with tab1:
-    top_10_companies = df.sort_values(by="Income in 2023(in CR)",ascending=False).head(10)
-    st.write(top_10_companies[["Name","Income in 2023(in CR)"]])
-    
+        st.markdown("""
+    <style>
+    .tab-content {
+        width: 100%; /* Set to 100% to make it appear as full width */
+    }
+    </style>
+    """, unsafe_allow_html=True)
+        top_10_companies = df.sort_values(by="Income in 2023(in CR)",ascending=False).head(10)
+        st.write(top_10_companies[["Name","Income in 2023(in CR)"]])
+
+        
+
 with tab2:
     top_10_companies = df.sort_values(by="Income in 2022(in CR)",ascending=False).head(10)
-    st.write(top_10_companies[["Name","Income in 2022(in CR)"]])
+    st.write(top_10_companies[["Name","Income in 2022(in CR)"]],width="400")
 with tab3:
     top_10_companies = df.sort_values(by="Income in 2021(in CR)",ascending=False).head(10)
     st.write(top_10_companies[["Name","Income in 2021(in CR)"]])
@@ -141,11 +182,20 @@ product_sales.update_layout(
 #visvalization
 column1,column2,column3 = st.columns(3)
 column1.plotly_chart(product_sales,use_container_width=True)
-df5 = pd.DataFrame(
-    np.random.randn[(21,78, 2)/50],
-    columns=['lat', 'lon'])
+st.title("TOP 10 STARTUPS")
+df5 = pd.DataFrame({
+    "col1": [28.6139,19.7515,26.8467,15.3173,11.1271, 22.9868,27.0238,10.8505, 22.2587,31.1471,] ,
+    "col2": [77.2090,75.7139,80.9462,75.7139,78.6569,87.8550,74.2179,76.2711,71.1924,75.3412],
+    "col3": np.random.randn(10) * 10000,
+    "col4": np.random.rand(10, 4).tolist(),
+})
 
-st.map(df5)
+st.map(df5,
+    latitude='col1',
+    longitude='col2',
+    size='col3',
+    color='col4')
+
 # gender = st.sidebar.multiselect(
 #     "Select the Gender:",
 #     options=df["Gender"].unique(),
