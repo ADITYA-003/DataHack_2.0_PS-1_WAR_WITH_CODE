@@ -66,16 +66,40 @@ css = '''
 st.markdown(css, unsafe_allow_html=True)
 #     # Filter the data for "Reliance Industries Ltd."
 def covid():
-    x = [1, 2, 3, 4, 5]
-    y = [6, 7, 2, 4, 5]
-    p = figure(
-    title='simple line example',
-    x_axis_label='x',
-    y_axis_label='y')
+   data = {
+    "Company Name": [
+        "Tata Elxsi", "Kellton Tech Solutions Limited", "Happiest Minds Technologies Ltd.",
+        "Zensar Technologies Ltd.", "Persistent Systems", "Saksoft", "Cyient",
+        "Affle (India) Limited", "Haptik", "Flutura", "Niki.ai", "Reliance Industries Ltd.",
+        "TVS Motor Company", "Tata Motors", "Indian Oil Corporation",
+        "Mahindra & Mahindra", "Hindalco Industries", "Exide Industries Ltd", "Aether Industries",
+        "Ola Electric", "Yulu", "EMotorad", "Wipro", "Tata Consultancy Services Ltd",
+        "Mindtree", "Infosys Ltd", "Tech Mahindra", "Subex Ltd", "Zoho", "Razorpay Software Pvt Ltd"
+    ],
+    "Total_Income": [
+        10648.47, 4137.5, 4694.7, 8089.69, 15240.63, 745.01, 9262.4, 1528.06, 353.67, 484.63,
+        15.2, 3272020, 115054, 1453594, 2825231, 471108, 804860, 57840.04, 1265, 3074.72, 46.4,
+        252.49, 364947, 904305, 1516, 555228, 211991, 1738, 25346.05, 2330.2
+    ]
 
-    p.line(x, y, legend_label='Trend', line_width=2)
+}
+   df = pd.DataFrame(data)
 
-    st.bokeh_chart(p, use_container_width=True)
+    # Create a line chart using st.line_chart
+   st.line_chart(df.set_index('Company Name')['Total_Income'], use_container_width=True)
+   
+    # X = df.iloc[:,9:]
+   
+    # Y = df.iloc[:,-1]
+ 
+    # p = figure(
+    # title='Effect of Covid19 On Indian Startups',
+    # x_axis_label='x',
+    # y_axis_label='y')
+
+    # # p.line(x, y, legend_label='Trend', line_width=2)
+
+    # st.line_chart(df, x=X,y=Y, use_container_width=True)
 
 # Select the relevant columns for the last five years
     # reliance_data = reliance_data[['Income Year', 'Income of 5 Years']]
@@ -87,17 +111,42 @@ with st.sidebar.header("Please Filter Here:"):
     location = st.sidebar.multiselect(
         "Select the Location:",
         options=df["Location"].unique(),
-        default=df["Location"].unique()
-    )
+        default=df["Location"].unique(),
+        )
+    custom_css = """
+    <style>
+       .multiselect[data-testid="stMultiselect"] .st-eb{  
+        background-color: #A352B0; /* Background color */
+        color: #FFFFFF; /* Text color */
+        }
+    </style>
+    """
+    st.markdown(custom_css, unsafe_allow_html=True)
     head1,head2 = st.columns(2)
     with head1:
         q1 = st.button("TOP_COMPANY",on_click=bar_Reliance,type="primary")
+        m1 = st.markdown(
+            """
+            <style>
+                button[data-testid="baseButton-secondary"]{  
+                    background-color: #86CCEE;
+                    color:#FFFFFF;
+                }
+            </style>""",
+            unsafe_allow_html=True,
+        )
     with head2:
-        q2 = st.button("COVID19",on_click=covid,type="primary")
-    # uploaded_file = st.file_uploader("Choose a file")
-    # if uploaded_file is not None:
-    #     dd = pd.read_csv(uploaded_file)
-    #     st.write(dd)
+        q2 = st.button("COVID19_STATITICS",on_click=covid,type="secondary")
+        m = st.markdown(
+            """
+            <style>
+                button[data-testid="baseButton-secondary"]{  
+                    background-color: #A352B0;
+                    color:#FFFFFF;
+                }
+            </style>""",
+            unsafe_allow_html=True,
+        )
 
 
 sector = st.sidebar.multiselect(
@@ -105,42 +154,40 @@ sector = st.sidebar.multiselect(
     options=df["Sector"].unique(),
     default=df["Sector"].unique(),
 )
-
+uploaded_file = st.file_uploader("Choose a file")
+if uploaded_file is not None:
+    dd = pd.read_csv(uploaded_file)
+    st.write(dd)
 df_selection = df.query(
     "Location == @location & Sector == @sector"
 )
-print(df)
+
 total_revenue = int(df_selection['Total_Income'].sum())
 average_income_2023 = round(df_selection["Income in 2023(in CR)"].mean(), 2)
-column1,column2,column3 = st.columns(3)
+column1,column2 = st.columns(2)
 with column1:
     # st.subheader("total income")
-    st.subheader(f"Total_Income {total_revenue}")
+    st.subheader(f":blue[Total_Income] {total_revenue} :red[CR]")
 with column2:
-    st.subheader("Average Income In 2023:")
-    st.subheader(average_income_2023)
+    st.subheader(f":blue[Average Income In 2023:] {average_income_2023} :red[CR]")
 # ---- MAINPAGE ----
 st.title(":bar_chart: INCOME TRENDS")
 st.markdown("##")
 
-
+font_css="""
+<style>
+button[data-baseweb="tab"]>div[data-testid="stMarkdownContainer"]>p{
+    font_size:24px;
+}
+</style>
+"""
 tab1, tab2, tab3, tab4,tab5  = st.tabs(["2023","2022","2021","2020","2019"])
 with tab1:
-        st.markdown("""
-    <style>
-    .tab-content {
-        width: 100%; /* Set to 100% to make it appear as full width */
-    }
-    </style>
-    """, unsafe_allow_html=True)
-        top_10_companies = df.sort_values(by="Income in 2023(in CR)",ascending=False).head(10)
-        st.write(top_10_companies[["Name","Income in 2023(in CR)"]])
-
-        
-
+       top_10_companies = df.sort_values(by="Income in 2023(in CR)",ascending=False).head(10)
+       st.write(top_10_companies[["Name","Income in 2023(in CR)"]])
 with tab2:
     top_10_companies = df.sort_values(by="Income in 2022(in CR)",ascending=False).head(10)
-    st.write(top_10_companies[["Name","Income in 2022(in CR)"]],width="400")
+    st.write(top_10_companies[["Name","Income in 2022(in CR)"]])
 with tab3:
     top_10_companies = df.sort_values(by="Income in 2021(in CR)",ascending=False).head(10)
     st.write(top_10_companies[["Name","Income in 2021(in CR)"]])
@@ -152,16 +199,29 @@ with tab5:
     st.write(top_10_companies[["Name","Income in 2019(in CR)"]])
 
 
+data = {
+    "Sector": ["Natural Language Processing", "Conversational AI", "Machine Learning", "Big Data", "ERP Consulting", "Data Analytics", "Artificial Intelligence", "Custom Software Development", "Electrive Vehicle", "Electric Vehicle"],
+    "Total_Income": [15.20, 353.67, 4137.50, 4694.70, 8089.69, 9262.40, 13406.17, 15240.63, 3272020.00, 4393879.00]
+}
+
+df10 = pd.DataFrame(data)
+st.bar_chart(df10.set_index('Sector'), use_container_width=True)
+
 sales_by_sector = df_selection.groupby(by=["Sector"])[["Total_Income"]].sum().sort_values(by="Total_Income")
+# print(sales_by_sector)
+
+# Create a bar chart with Sector on the y-axis and Total_Income on the x-axis
+
 product_sales = px.bar(
     sales_by_sector,
-    x="Total_Income",
-    y=sales_by_sector.index,
+    x= "Total_Income",
+    y=sales_by_sector.index,  
     orientation="h",
     title="<b>Sales by sector</b>",
     color_discrete_sequence=["#275BBB"] * len(sales_by_sector),
     template="plotly_white",
 )
+print(product_sales)
 product_sales.update_layout(
     plot_bgcolor="rgba(0,0,0,0)",
     xaxis=(dict(showgrid=False))
