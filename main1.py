@@ -1,7 +1,5 @@
 import pandas as pd  # pip install pandas openpyxl
-# import plotly.express as px  # pip install plotly-express
-from plotly import version
-print(version)
+import plotly.express as px  # pip install plotly-express
 import streamlit as st  # pip install streamlit
 import numpy as np
 from streamlit_echarts import st_echarts
@@ -31,8 +29,8 @@ st.markdown(
     """,
     unsafe_allow_html=True,
 )
-# px.defaults.width = 1000
-# px.defaults.height = 500
+px.defaults.width = 1000
+px.defaults.height = 500
 def bar_Reliance():
     reliance_data = df[df['Name'] == 'Reliance Industries Ltd.']
     years = [2019, 2020, 2021, 2022, 2023]
@@ -206,35 +204,35 @@ st.bar_chart(df10.set_index('Sector'), use_container_width=True)
 sales_by_sector = df_selection.groupby(by=["Sector"])[["Total_Income"]].sum().sort_values(by="Total_Income")
 # print(sales_by_sector)
 
-# # Create a bar chart with Sector on the y-axis and Total_Income on the x-axis
+# Create a bar chart with Sector on the y-axis and Total_Income on the x-axis
 
-# product_sales = px.bar(
-#     sales_by_sector,
-#     x= "Total_Income",
-#     y=sales_by_sector.index,  
-#     orientation="h",
-#     title="<b>Sales by sector</b>",
-#     color_discrete_sequence=["#275BBB"] * len(sales_by_sector),
-#     template="plotly_white",
-# )
-# print(product_sales)
-# product_sales.update_layout(
-#     plot_bgcolor="rgba(0,0,0,0)",
-#     xaxis=(dict(showgrid=False))
-# )
-# fig_avg_income_2023 = px.bar(
-#     sales_by_sector,
-#     x="Total_Income",
-#     y=sales_by_sector.index,
-#     orientation="h",
-#     title="<b>Sales by sector</b>",
-#     color_discrete_sequence=["#275BBB"] * len(sales_by_sector),
-#     template="plotly_white",
-# )
-# product_sales.update_layout(
-#     plot_bgcolor="rgba(0,0,0,0)",
-#     xaxis=(dict(showgrid=False))
-# )
+product_sales = px.bar(
+    sales_by_sector,
+    x= "Total_Income",
+    y=sales_by_sector.index,  
+    orientation="h",
+    title="<b>Sales by sector</b>",
+    color_discrete_sequence=["#275BBB"] * len(sales_by_sector),
+    template="plotly_white",
+)
+print(product_sales)
+product_sales.update_layout(
+    plot_bgcolor="rgba(0,0,0,0)",
+    xaxis=(dict(showgrid=False))
+)
+fig_avg_income_2023 = px.bar(
+    sales_by_sector,
+    x="Total_Income",
+    y=sales_by_sector.index,
+    orientation="h",
+    title="<b>Sales by sector</b>",
+    color_discrete_sequence=["#275BBB"] * len(sales_by_sector),
+    template="plotly_white",
+)
+product_sales.update_layout(
+    plot_bgcolor="rgba(0,0,0,0)",
+    xaxis=(dict(showgrid=False))
+)
 #visvalization
 column1,column2,column3 = st.columns(3)
 column1.plotly_chart(product_sales,use_container_width=True)
