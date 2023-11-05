@@ -221,13 +221,16 @@ uploaded_file = st.file_uploader("Choose a file")
 if uploaded_file is not None:
     dd = pd.read_csv(uploaded_file, encoding="ISO-8859-1")
     st.write(dd)
-    dd.to_csv("uploaded_file.csv", index=False)
+    # dd.to_csv("uploaded_file.csv", index=False)
+    dd["Date"] = pd.to_datetime(dd["Date"])
+    dd.set_index(dd["Date"], inplace=True)
 
     options = dd.columns.to_list()
     user_input = st.multiselect("Select an option: ", options)
     st.write("You selected: ", user_input)
     if user_input:
-        plt.plot(dd[user_input[0]], dd[user_input[1]])
+        # plt.plot(dd[user_input[0]].head(100), dd[user_input[1]].head(100))
+        plt.plot(dd.index.year, dd[user_input[0]])
         st.pyplot(plt)
 df_selection = df.query("Location == @location & Sector == @sector")
 
