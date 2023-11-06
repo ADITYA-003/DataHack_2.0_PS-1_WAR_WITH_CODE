@@ -10,6 +10,7 @@ import matplotlib.pyplot as plt
 st.set_page_config(page_title="Sales Dashboard", page_icon=":bar_chart:", layout="wide")
 
 
+
 @st.cache_data
 def get_data_from_excel():
     df = pd.read_excel(
@@ -227,7 +228,7 @@ if uploaded_file is not None:
 
     options = dd.columns.to_list()
     user_input = st.multiselect("Select an option: ", options)
-    st.write("You selected: ", user_input)
+    # st.write("You selected: ", user_input)
     if user_input:
         # plt.plot(dd[user_input[0]].head(100), dd[user_input[1]].head(100))
         plt.plot(dd.index.year, dd[user_input[0]])

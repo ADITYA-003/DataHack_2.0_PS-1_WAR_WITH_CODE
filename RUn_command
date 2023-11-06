@@ -1,0 +1,9 @@
+python -m streamlit run filename.py
+or
+streamlit run filename.py
+
+For environment :-
+venv/Scripts/activate
+streamlit run filename.py
+
+pip3 install -r requirement.txt --user
