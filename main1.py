@@ -10,7 +10,6 @@ import matplotlib.pyplot as plt
 st.set_page_config(page_title="Sales Dashboard", page_icon=":bar_chart:", layout="wide")
 
 
-
 @st.cache_data
 def get_data_from_excel():
     df = pd.read_excel(
@@ -170,7 +169,7 @@ def covid():
 
 # Create a Streamlit bar chart
 # st.bar_chart(reliance_data.set_index('Income Year'))
-st.header(" :blue[DASHBOARD] :trophy:", divider="rainbow")
+st.header(" :blue[DASHBOARD] :trophy:")
 with st.sidebar.header("Please Filter Here:"):
     location = st.sidebar.multiselect(
         "Select the Location:",
