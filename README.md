@@ -1,8 +1,8 @@
 # DataHack_2.0_PS-1_WAR_WITH_CODE
 
-<H2>
-  This site was built using [Streamlit](https://ai-startups.streamlit.app/)
-  <H2>
+
+# This site was built using [Streamlit](https://ai-startups.streamlit.app/)
+
 
 <H3>DATA DRIVEN ANALYSIS OF INDIAN STARTUPS IN ARTIFICAL INTELLIENCE AND DATA SCIENCE</H3>
 
